@@ -1,0 +1,27 @@
+{
+  "name": "invs-dash",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.10.1",
+    "echarts": "^5.6.0",
+    "lucide-vue-next": "^1.0.0",
+    "pinia": "^2.3.1",
+    "vue": "^3.5.32",
+    "vue-echarts": "^7.0.3"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.10.1",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.2",
+    "vue-tsc": "^2.2.12"
+  }
+}

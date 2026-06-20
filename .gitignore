@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+bun.lock
+
+# Build output
+dist/
+vite-dist/
+
+# Tauri
+src-tauri/target/
+src-tauri/Cargo.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# TypeScript
+*.tsbuildinfo
