@@ -1,121 +1,133 @@
 # INVS Dash
 
-[![Tauri](https://img.shields.io/badge/Tauri%202-blue?logo=tauri)](https://tauri.app)
-[![Vue](https://img.shields.io/badge/Vue%203-green?logo=vue.js)](https://vuejs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org)
-[![Vite](https://img.shields.io/badge/Vite-7-purple?logo=vite)](https://vitejs.dev)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
-A desktop dashboard application for analyzing **monthly drug purchase values** from the INVS SQL Server database. Built with Tauri 2 + Vue 3 + TypeScript + Apache ECharts.
-
----
-
-## Features
-
-- **Drug Value Trend Chart** — Visualize monthly purchase value (Baht) for any drug item as a bar+line combo chart
-- **Top Drugs by Value** — Ranked list of top 10 drugs by total annual purchase value
-- **Summary KPIs** — Total purchase value, active drug items count, and peak month at a glance
-- **Drug Search** — Autocomplete search by drug code or name
-- **Year Selector** — Filter data across available years
-- **Crispy Banana Theme** — Warm, professional UI optimized for long analysis sessions
+```
+██╗███╗   ██╗██╗   ██╗ ██████╗██████╗  █████╗  ██████╗██╗  ██╗
+██║████╗  ██║██║   ██║██╔════╝██╔══██╗██╔══██╗██╔════╝██║  ██║
+██║██╔██╗ ██║██║   ██║███████╗██║  ██║███████║███████╗███████║
+██║██║╚██╗██║╚██╗ ██╔╝╚════██║██║  ██║██╔══██║╚════██║██║  ██║
+██║██║ ╚████║ ╚████╔╝ ██████╔╝██████╔╝██║  ██║██████╔╝██║  ██║
+╚═╝╚═╝  ╚═══╝  ╚═══╝╚═════╝╚═════╝ ╚═╝  ╚═╝╚═════╝╚═╝  ╚═╝
+```
 
 ---
 
-## Tech Stack
+## ◆ PULSE
 
-| Layer | Technology |
-|-------|------------|
-| Desktop Framework | [Tauri 2](https://tauri.app) |
-| Frontend | [Vue 3](https://vuejs.org) + [TypeScript](https://www.typescriptlang.org) |
-| Build Tool | [Vite 7](https://vitejs.dev) |
-| State Management | [Pinia](https://pinia.vuejs.org) |
-| Charts | [Apache ECharts](https://echarts.apache.org) via [vue-echarts](https://github.com/ecomfe/vue-echarts) |
-| Database | SQL Server (via [tiberius](https://github.com/prisma/tiberius) Rust client) |
+What the Ministry of Public Health bought is written in INVS; what it
+means is written nowhere. INVS Dash reads the SQL Server database -
+`MS_IVO`, `MS_IVO_C`, `DRUG_GN` - and answers the procurement question
+in Baht: monthly purchase value for any drug, the top ten of the year,
+and the KPIs a budget review starts from. A desktop dashboard with a
+warm theme for the long analysis sessions, connected read-only, drawn
+by ECharts.
+
+| Trend ▣ | Top 10 ▣ | KPIs ▣ | Direct read ▣ |
+|---|---|---|---|
+
+*The value view - connect, search, trend, rank - is sealed.*
+
+> Built with Tauri 2 + Vue 3 + TypeScript, drawn by Apache ECharts,
+> read from INVS SQL Server through the `tiberius` Rust client.
+>
+> **suradet-ps**, artifact keeper
 
 ---
 
-## Prerequisites
+## ◆ IGNITION
+
+One clone, one install, one command.
+
+```
+⟫ git clone https://github.com/suradet-ps/invs-dash.git
+⟫ cd invs-dash
+⟫ bun install
+⟫ bun tauri dev
+```
+
+The release artifact: `⟫ bun tauri build`
+
+<details>
+<summary>Prerequisites</summary>
 
 - [Node.js](https://nodejs.org) (v18+)
 - [Rust](https://www.rust-lang.org/tools/install) (latest stable)
 - [Tauri CLI](https://tauri.app/v2/guide/cli/)
-- SQL Server instance (INVS database)
+- An SQL Server instance with the INVS database
+
+On first launch, the Connection dialog asks for server, port (default
+`1433`), username, password, database (`INVS`), and optional named
+instance - settings persist locally.
+
+</details>
 
 ---
 
-## Getting Started
+## ◆ ANATOMY
 
-### 1. Install dependencies
+One connection, three tables, several honest charts.
 
-```bash
-bun install
-```
-
-### 2. Run in development mode
-
-```bash
-bun tauri dev
-```
-
-### 3. Build for production
-
-```bash
-bun tauri build
-```
+- **Connects** - the settings dialog opens a `tiberius` client to SQL
+  Server; the connection is held for questions, never for writes.
+- **Reads** - the queries touch exactly three tables: `MS_IVO` invoice
+  headers (`RECEIVE_DATE` as `YYYYMMDD` integers), `MS_IVO_C` invoice
+  lines (`WORKING_CODE`, `VALUE`), and `DRUG_GN` drug names.
+- **Trends** - one drug's monthly purchase value renders as a bar+line
+  combo across the year - the shape of spending, not just its total.
+- **Ranks** - the top ten drugs by annual purchase value answer "where
+  did the money go" in one column.
+- **Summarizes** - total purchase value, active item count, and the
+  peak month sit in the KPI bar, first glance, no digging.
+- **Warms** - the Crispy Banana theme keeps the eyes comfortable across
+  an afternoon of analysis - professional warmth, not distraction.
 
 ---
 
-## Configuration
+## ◆ RITUALS
 
-On first launch, click the **⚙ Connection** button in the top-right corner to configure your SQL Server connection:
+**The core ceremony** - the monthly value review:
 
-| Field | Description | Default |
-|-------|-------------|---------|
-| Server / Host | SQL Server IP or hostname | `localhost` |
-| Port | SQL Server port | `1433` |
-| Username | Database username | — |
-| Password | Database password | — |
-| Database | Database name | `INVS` |
-| Instance | Named instance (optional) | — |
+1. Open INVS Dash and connect to the database. One configuration,
+   remembered.
+2. Pick the year. The KPI bar states the total, the count, and the
+   peak month at a glance.
+3. Search a drug; its monthly value curve renders, bar over line.
+4. Read the top ten. The meeting now knows where the money went.
 
-Connection settings are persisted to local storage.
+**The ceremony of the direct read** - no export, no spreadsheet
+archaeology: the Rust backend asks SQL Server and ECharts draws the
+answer. The number on screen is the number in the database.
+
+**The ceremony of restraint** - the dashboard reads value and never
+writes a row. INVS stays the system of record; the dashboard is the
+witness, not the clerk.
 
 ---
 
-## Project Structure
+## ◆ ECHOES
+
+**Where this artifact is heading**
 
 ```
-invs-dash/
-├── src-tauri/
-│   ├── src/
-│   │   ├── main.rs          # Tauri app entry
-│   │   ├── lib.rs           # Tauri 2 lib entry
-│   │   ├── db.rs            # SQL Server connection & queries
-│   │   └── commands.rs      # Tauri commands exposed to frontend
-│   ├── Cargo.toml
-│   └── tauri.conf.json
-├── src/
-│   ├── App.vue              # Main layout
-│   ├── components/          # Vue components
-│   ├── stores/              # Pinia stores
-│   ├── composables/         # Vue composables
-│   └── styles/              # Crispy Banana theme
-├── package.json
-└── vite.config.ts
+connect ▸ SQL Server settings, persisted locally ──────────────────── ▸ sealed
+read     ▸ MS_IVO, MS_IVO_C, DRUG_GN queries ──────────────────────── ▸ sealed
+trend    ▸ monthly value bar+line chart ────────────────────────────── ▸ sealed
+rank     ▸ top ten by annual purchase value ────────────────────────── ▸ sealed
+summary  ▸ KPIs: total, active count, peak month ───────────────────── ▸ sealed
 ```
 
----
+**Raising the artifact** - the ground rules live in `AGENTS.md` and
+`AGENTS-RUST.md`. Open an issue first to discuss a change.
 
-## SQL Server Schema
-
-The app queries the following tables:
-
-- **`MS_IVO`** — Invoice header (contains `RECEIVE_DATE` as `INT` in `YYYYMMDD` format)
-- **`MS_IVO_C`** — Invoice items (`WORKING_CODE`, `VALUE`, `INVOICE_NO`)
-- **`DRUG_GN`** — Drug master data (`WORKING_CODE`, `DRUG_NAME`)
+**Status** - this artifact ships from source; releases are built with
+`bun tauri build`.
 
 ---
 
-## License
+```
+  ─────────────────────────────────────────
+   A purchase value without a shape
+   is a number without a story.
+  ─────────────────────────────────────────
+```
 
 [MIT](LICENSE)
